@@ -179,12 +179,12 @@ class GHClient:
     def _cache(
         self: Self, *, type: str
     ) -> Callable[
-        [Callable[Concatenate[Self, P], Awaitable[T]]],
-        Callable[Concatenate[Self, P], Awaitable[Optional[Union[T, User, Repository]]]],
+        [Callable[[Concatenate[Self, P]], Awaitable[T]]],
+        Callable[[Concatenate[Self, P]], Awaitable[Optional[Union[T, User, Repository]]]],
     ]:
         def wrapper(
-            func: Callable[Concatenate[Self, P], Awaitable[T]]
-        ) -> Callable[Concatenate[Self, P], Awaitable[Optional[Union[T, User, Repository]]]]:
+            func: Callable[[Concatenate[Self, P]], Awaitable[T]]
+        ) -> Callable[[Concatenate[Self, P]], Awaitable[Optional[Union[T, User, Repository]]]]:
             @functools.wraps(func)
             async def wrapped(self: Self, *args: P.args, **kwargs: P.kwargs) -> Optional[Union[T, User, Repository]]:
                 if type == 'user':
@@ -367,6 +367,9 @@ class GHClient:
         :class:`Organization`
         """
         return Organization(await self.http.get_org(org), self.http)
+
+    async def create_issue_comment(self, *, owner: str, repo: str, issue: int, comment: str):
+        return await self.http.create_issue_comment(owner, repo, issue, comment)
 
     async def latency(self) -> float:
         """:class:`float`: Returns the latency of the client."""
