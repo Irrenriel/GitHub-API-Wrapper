@@ -32,8 +32,6 @@ ADD_FILE_URL = f"{BASE_URL}/repos/{{}}/{{}}/contents/{{}}"
 
 ADD_FILE_BRANCH = f"{BASE_URL}"
 
-REPO_ISSUE_URL = f"{REPO_URL}/issues/{{2}}"  # a specific issue
-
 # == gist urls ==#
 GIST_URL = f"{BASE_URL}/gists/{{0}}"  # specific gist
 
@@ -41,3 +39,8 @@ CREATE_GIST_URL = f"{BASE_URL}/gists"  # create a gist
 
 # == org urls ==#
 ORG_URL = f"{BASE_URL}/orgs/{{0}}"
+
+# == issue urls ==#
+REPO_ISSUE_URL = f"{REPO_URL}/issues/{{2}}"  # a specific issue
+
+CREATE_ISSUE_COMMENT = f"{REPO_ISSUE_URL}/comments"

@@ -359,6 +359,39 @@ class Issue(APIObject):
         return self._response.get('html_url')
 
 
+class IssueComment(APIObject):
+    """Comment of an issue on Github.
+
+    Attributes
+    ----------
+    id: :class:`int`
+        The ID of the issue in the API.
+    """
+    __slots__ = (
+        'id',
+        'node_id',
+        'user',
+        'created_at',
+        'updated_at',
+        'author_association',
+        'body',
+        'reactions',
+        'performed_via_github_app'
+    )
+
+    def __init__(self, response: Dict[str, Any], _http: http) -> None:
+        super().__init__(response, _http)
+        tmp = self.__slots__ + APIObject.__slots__
+        keys = {key: value for key, value in self._response.items() if key in tmp}
+        for key, value in keys.items():
+            if key == 'user':
+                setattr(self, key, PartialUser(value, self._http))
+                continue
+
+            setattr(self, key, value)
+            continue
+
+
 # === Gist stuff ===#
 
 

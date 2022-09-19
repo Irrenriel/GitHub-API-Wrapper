@@ -14,6 +14,7 @@ from typing_extensions import TypeAlias
 
 from . import __version__
 from .exceptions import *
+from .exceptions import FileAlreadyExists
 from .objects import File, Gist, Repository, User, bytes_to_b64
 from .urls import *
 
@@ -320,3 +321,12 @@ class http:
         if result.status == 422:
             raise FileAlreadyExists('This file exists, and can only be edited.')
         return await result.json(), result.status
+
+    async def create_issue_comment(
+            self, owner: str, repo_name: str, issue_number: int, comment: str
+    ) -> Optional[Dict[str, Any]]:
+        data = json.dumps({"body": comment})
+        result = await self.session.post(CREATE_ISSUE_COMMENT.format(owner, repo_name, issue_number), data=data)
+        if 200 <= result.status <= 299:
+            return await result.json()
+        raise CantCreateAnIssueComment

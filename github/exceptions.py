@@ -27,6 +27,7 @@ __all__: Tuple[str, ...] = (
     'ResourceNotFound',
     'UserNotFound',
     'WillExceedRatelimit',
+    'CantCreateAnIssueComment'
 )
 
 
@@ -172,4 +173,10 @@ class FileAlreadyExists(ResourceAlreadyExists):
     def __init__(self, msg: Optional[str] = None):
         if msg is None:
             msg = 'The requested file already exists.'
+        super().__init__(msg)
+
+
+class CantCreateAnIssueComment(ResourceNotFound):
+    def __init__(self):
+        msg = 'Can`t create an issue comment.'
         super().__init__(msg)
